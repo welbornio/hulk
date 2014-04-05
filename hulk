@@ -1,0 +1,43 @@
+#! /usr/bin/env ruby
+
+require 'colorize'
+
+def get_builds
+	builds = {}
+	builds.store 'hubbub', 'git status'
+	builds.store 'work', 'git branch'
+	builds.store 'github', 'git remote --v'
+	return builds
+end
+
+
+def hulk!
+	builds = get_builds
+	puts "Hulk get builds!".green if builds.length > 0
+	count = 1
+	builds.each do |key, value|
+		puts " [#{count}] >> #{key}"
+		count += 1
+	end
+	
+	val = -1
+
+	while val > builds.length-1 or val < 0
+		print "Hulk smash which? ".green
+		begin
+			val = Integer(gets.chomp)
+		rescue
+			val = -1
+		end
+
+		puts "Hulk no like! Again!".green if val > builds.length-1 or val < 0
+	end
+
+	puts "Hulk run #{builds.keys[val-1]}!".green
+	puts "#{builds.values[val-1]}"
+
+	exec builds.values[val-1]
+end
+
+
+hulk!
