@@ -42,7 +42,7 @@ class Hulk
 		args.each do |arg|
 			@builds.each do |key, value|
 				if arg == key
-					puts "Hulk run #{arg}".green
+					puts "Hulk run build: #{arg}".green
 					value.each do |command|
 						puts "Hulk run command: #{command}".green
 						system( command )
