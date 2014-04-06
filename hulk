@@ -40,9 +40,13 @@ class Hulk
 	def self.run_build build, commands
 		puts "Hulk run build: #{build}".green
 		commands.each do |command|
-			puts "Hulk run command: #{command}".green
-			system( command )
-			puts
+			if command =~ /^--/
+				run_builds Array.wrap(command)
+			else
+				puts "Hulk run command: #{command}".green
+				system( command )
+				puts
+			end
 		end
 	end
 
