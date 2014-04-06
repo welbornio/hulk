@@ -4,7 +4,7 @@ hulk
 Hulk is an ultra simple command line tool for running a list of bash commands synchronously. The only dependency is the colorize gem.
 
 
-# Usage
+## Usage
 
 After adding a `hulk.yml` file to your project root, simply reference the following example to add hulk builds.
 
@@ -20,7 +20,7 @@ deploy:
 
 The above example will give you the following: 
  1. Calling `hulk push` will run the 3 commands you see under `push:`, in the order they appear, in a synchronous manner.
- 2. Calling 'hulk deploy' will run the `push` build, and then run the push to the heroku server. 
+ 2. Calling `hulk deploy` will run the `push` build, and then run the push to the heroku server. 
 
 ### Nesting builds
 
