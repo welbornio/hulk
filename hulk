@@ -37,19 +37,20 @@ class Hulk
 	end
 
 
-	def self.run_builds(args)
+	def self.run_build build, commands
+		puts "Hulk run build: #{build}".green
+		commands.each do |command|
+			puts "Hulk run command: #{command}".green
+			system( command )
+			puts
+		end
+	end
+
+
+	def self.run_builds args
 		@builds = parse_yaml
 		args.each do |arg|
-			@builds.each do |key, value|
-				if arg == key
-					puts "Hulk run build: #{arg}".green
-					value.each do |command|
-						puts "Hulk run command: #{command}".green
-						system( command )
-						puts
-					end
-				end
-			end
+			run_build arg, @builds[arg] if @builds.has_key? arg
 		end
 	end
 
