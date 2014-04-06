@@ -11,8 +11,9 @@ class Hulk
 		@builds = nil
 		begin
 			@builds = YAML::load( File.open( './hulk.yml' ) )
-		rescue
+		rescue Exception
 			puts "Hulk no like your hulk.yml".green
+			puts "#{$!}, #{$@}".red
 			exit
 		end
 		exit if !@builds
@@ -41,7 +42,9 @@ class Hulk
 		puts "Hulk run build: #{build}".green
 		commands.each do |command|
 			if command =~ /^--/
-				run_builds Array.wrap(command)
+				cmds = []
+				cmds << command[2..-1]
+				run_builds cmds
 			else
 				puts "Hulk run command: #{command}".green
 				system( command )
@@ -83,6 +86,7 @@ class Hulk
 		options = self.parse(ARGV)
 		list_builds if options.list == true
 		run_builds ARGV if ARGV and ARGV.length > 0
+		puts "Hulk no given arguments.".green if ARGV and ARGV.length == 0
 	end
 
 end

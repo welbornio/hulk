@@ -1,5 +1,0 @@
-deploy_hub:
-  - git add .
-  - git commit -m 'Further changes. Deploying from hulk'
-  - git push origin master
-  - git push
