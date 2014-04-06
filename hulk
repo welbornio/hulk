@@ -1,43 +1,86 @@
 #! /usr/bin/env ruby
 
 require 'colorize'
+require 'yaml'
+require 'optparse'
+require 'ostruct'
 
-def get_builds
-	builds = {}
-	builds.store 'hubbub', 'git status'
-	builds.store 'work', 'git branch'
-	builds.store 'github', 'git remote --v'
-	return builds
-end
+class Hulk
 
-
-def hulk!
-	builds = get_builds
-	puts "Hulk get builds!".green if builds.length > 0
-	count = 1
-	builds.each do |key, value|
-		puts " [#{count}] >> #{key}"
-		count += 1
-	end
-	
-	val = -1
-
-	while val > builds.length-1 or val < 0
-		print "Hulk smash which? ".green
+	def self.parse_yaml
+		@builds = nil
 		begin
-			val = Integer(gets.chomp)
+			@builds = YAML::load( File.open( './hulk.yml' ) )
 		rescue
-			val = -1
+			puts "Hulk no like your hulk.yml".green
+			exit
+		end
+		exit if !@builds
+		@builds
+	end
+
+
+	def self.get_builds
+		@builds = parse_yaml
+		@builds
+	end
+
+
+	def self.list_builds
+		@builds = parse_yaml
+		puts "Hulk show you builds!".green if @builds.length > 0
+		count = 1
+		@builds.each do |key, value|
+			puts " [#{count}] >> #{key}"
+			count += 1
+		end
+	end
+
+
+	def self.run_builds(args)
+		@builds = parse_yaml
+		args.each do |arg|
+			@builds.each do |key, value|
+				if arg == key
+					puts "Running #{arg}".green
+					value.each do |command|
+						puts "Hulk is running: #{command}".green
+						system( command )
+						puts
+					end
+				end
+			end
+		end
+	end
+
+
+	def self.parse(args)
+		options = OpenStruct.new
+
+		options.list = false
+		options.command = ''
+
+		opt_parser = OptionParser.new do |opts|
+			opts.banner = "Usage: hulk [options]"
+
+			opts.on('-l', '--[no-]list', 'List Builds') do |l|
+				options[:list] = l
+			end
+
 		end
 
-		puts "Hulk no like! Again!".green if val > builds.length-1 or val < 0
+		opt_parser.parse!(args)
+    options
 	end
 
-	puts "Hulk run #{builds.keys[val-1]}!".green
-	puts "#{builds.values[val-1]}"
 
-	exec builds.values[val-1]
+	def self.hulk_smash
+		options = self.parse(ARGV)
+		list_builds if options.list == true
+		run_builds ARGV if ARGV and ARGV.length > 0
+	end
+
 end
 
 
-hulk!
+Hulk.hulk_smash
