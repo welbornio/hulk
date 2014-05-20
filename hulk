@@ -89,6 +89,11 @@ class Hulk
 		puts "Hulk no given arguments.".green if ARGV and ARGV.length == 0
 	end
 
+	def self.kill
+		puts "kill!"
+		puts "mojo"
+	end
+
 end
 
 
