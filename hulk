@@ -91,6 +91,7 @@ class Hulk
 
 	def self.kill
 		puts "kill!"
+		puts "mojo"
 	end
 
 end
