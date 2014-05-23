@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'hulk/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "hulk"
+  spec.name          = "the_hulk"
   spec.version       = Hulk::VERSION
   spec.authors       = ["Ethan Welborn"]
   spec.email         = ["welborn.ethan@gmail.com"]
