@@ -19,18 +19,11 @@ module Hulk
 			return builds
 		end
 
-
-		def get_builds
-			@builds = parse_yaml
-			@builds
-		end
-
-
 		def list_builds
-			@builds = parse_yaml
-			puts "Hulk show you builds!".colorize(:green) if @builds.length > 0
+			builds = parse_yaml
+			puts "Hulk show you builds!".colorize(:green) if builds.length > 0
 			count = 1
-			@builds.each do |key, value|
+			builds.each do |key, value|
 				puts " [#{count}] >> #{key}"
 				count += 1
 			end
@@ -54,9 +47,9 @@ module Hulk
 
 
 		def run_builds args
-			@builds = parse_yaml
+			builds = parse_yaml
 			args.each do |arg|
-				run_build arg, @builds[arg] if @builds.has_key? arg
+				run_build arg, builds[arg] if builds.has_key? arg
 			end
 		end
 
