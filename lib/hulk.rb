@@ -14,16 +14,16 @@ module Hulk
 				builds = YAML::load( File.open( './hulk.yml' ) )
 			rescue Exception
 				STDERR.puts "#{$!}".colorize(:red)
-				exit
+				exit 1
 			end
 
 			if not builds
 				puts "Hulk no find builds in hulk.yml".colorize(:green)
-				exit
+				exit 1
 			else
 				builds
 			end
-			
+
 		end
 
 		def list_builds
@@ -79,7 +79,12 @@ module Hulk
 
 			end
 
-			opt_parser.parse!(args)
+			begin
+				opt_parser.parse!(args)
+			rescue OptionParser::InvalidOption => e
+				STDERR.puts "Invalid Hulk option: #{e}"
+				exit 1
+			end
 	    options
 		end
 
@@ -87,7 +92,7 @@ module Hulk
 		def bootstrap
 			if ARGV and ARGV.empty?
 				puts "Hulk no given arguments.".colorize(:green)
-				exit
+				exit 1
 			end
 
 			options = parse ARGV
