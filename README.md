@@ -10,12 +10,12 @@ After adding a `hulk.yml` file to your project root, simply reference the follow
 
 ```YML
 push:
-  - git add .
-  - git commit -m 'Made some changes.'
-  - git push origin master
+  - "git add ."
+  - "git commit -m 'Made some changes.'"
+  - "git push origin master"
 deploy:
   - --push
-  - git push -f heroku dev:master
+  - "git push -f heroku dev:master"
 ```
 
 The above example will give you the following: 
