@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["welborn.ethan@gmail.com"]
   spec.summary       = %q{Super simple, super strong command runner.}
   spec.description   = %q{Hulk takes a .yml file with sets of commands that it can run sequentially.}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/ethanwelborn/hulk"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
