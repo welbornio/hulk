@@ -49,6 +49,7 @@ module Hulk
 		def run_builds args
 			builds = parse_yaml
 			args.each do |arg|
+				puts "Trying to run: #{arg}"
 				if builds.has_key? arg
 					run_build arg, builds[arg]
 				else
@@ -81,8 +82,12 @@ module Hulk
 		def bootstrap
 			options = parse(ARGV)
 			list_builds if options.list == true
-			run_builds ARGV if ARGV and ARGV.length > 0
-			puts "Hulk no given arguments.".colorize(:green) if ARGV and ARGV.length == 0
+			parse 
+			if ARGV and ARGV.length >0
+				run_builds ARGV
+			else 
+				puts "Hulk no given arguments.".colorize(:green)
+			end
 		end
 
 	end
