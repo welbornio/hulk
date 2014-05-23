@@ -3,6 +3,7 @@ require 'colorize'
 require 'yaml'
 require 'optparse'
 require 'ostruct'
+require 'shellwords'
 
 module Hulk
 	class Runner
@@ -54,11 +55,10 @@ module Hulk
 		def run_command command
 				puts "Hulk run command: #{command}".colorize(:green)
 				if command.include? '$$'
-					puts "Enter var for: #{command}: "
-					input = gets.chomp
+					input = [(print "Enter var for: #{command}: ".colorize(:light_blue)), $stdin.gets.rstrip][1] # Prompt and input on same line
 					command .sub! '$$', input
 				end
-				system( command )
+				system Shellwords.escape command
 				puts
 		end
 
