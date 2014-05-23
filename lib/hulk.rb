@@ -8,6 +8,10 @@ require 'shellwords'
 module Hulk
 	class Runner
 
+		def initialize
+			@complete_command_list = Array.new
+		end
+
 		def parse_yaml
 			builds = nil
 
@@ -44,38 +48,45 @@ module Hulk
 				if command =~ /^--/
 					cmds = []
 					cmds << command[2..-1]
-					spawn_builds cmds
+					collect_builds cmds
 				else
-					begin
-						run_command command
-					rescue
-						$stderr.puts "There was an error when attempting to run: #{command}".colorize(:red)
-						exit
-					end
+					prep_command command
 				end
 			end
 		end
 
 
-		def run_command command
+		def prep_command command
 				if command.include? '$$'
 					input = [(print "Enter var for: #{command.colorize(:light_blue)}: "), $stdin.gets.rstrip][1] # Prompt and input on same line
 					$stdin.flush
 					command .sub! '$$', input
+					@complete_command_list << command
 				end
-				puts "Hulk run command: #{command.colorize(:green)}"
-				system command
-				puts
 		end
 
 
-		def spawn_builds args
+		def collect_builds args
 			builds = parse_yaml
 			args.each do |arg|
 				if builds.has_key? arg
 					run_build arg, builds[arg]
 				else
 					puts "Hulk no find build: #{arg}".colorize(:green)
+				end
+			end
+		end
+
+
+		def run_builds
+			@complete_command_list.each do |command|
+				begin
+					puts "Hulk run command: #{command.colorize(:green)}"
+					system command
+					puts
+				rescue
+					$stderr.puts "There was an error when attempting to run: #{command}".colorize(:red)
+					exit
 				end
 			end
 		end
@@ -115,7 +126,8 @@ module Hulk
 			if ARGV.empty?
 				list_builds if options.list == true
 			else
-				spawn_builds ARGV
+				collect_builds ARGV
+				run_builds
 			end
 		end
 
