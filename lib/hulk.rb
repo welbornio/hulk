@@ -9,14 +9,21 @@ module Hulk
 
 		def parse_yaml
 			builds = nil
+
 			begin
 				builds = YAML::load( File.open( './hulk.yml' ) )
 			rescue Exception
 				STDERR.puts "#{$!}".colorize(:red)
 				exit
 			end
-			exit if !builds
-			return builds
+
+			if not builds
+				puts "Hulk no find builds in hulk.yml".colorize(:green)
+				exit
+			else
+				builds
+			end
+			
 		end
 
 		def list_builds
@@ -36,7 +43,7 @@ module Hulk
 				if command =~ /^--/
 					cmds = []
 					cmds << command[2..-1]
-					run_builds cmds
+					spawn_builds cmds
 				else
 					puts "Hulk run command: #{command}".colorize(:green)
 					system( command )
@@ -46,10 +53,9 @@ module Hulk
 		end
 
 
-		def run_builds args
+		def spawn_builds args
 			builds = parse_yaml
 			args.each do |arg|
-				puts "Trying to run: #{arg}"
 				if builds.has_key? arg
 					run_build arg, builds[arg]
 				else
@@ -59,11 +65,10 @@ module Hulk
 		end
 
 
-		def parse(args)
+		def parse args
 			options = OpenStruct.new
 
 			options.list = false
-			options.command = ''
 
 			opt_parser = OptionParser.new do |opts|
 				opts.banner = "Usage: hulk [options]"
@@ -75,20 +80,21 @@ module Hulk
 			end
 
 			opt_parser.parse!(args)
-	    return options
+	    options
 		end
 
 
 		def bootstrap
-			if ARGV and ARGV.length == 0
+			if ARGV and ARGV.empty?
 				puts "Hulk no given arguments.".colorize(:green)
+				exit
+			end
+
+			options = parse ARGV
+			if ARGV.empty?
+				list_builds if options.list == true
 			else
-				options = parse(ARGV)
-				if options.empty?
-					run_builds ARGV
-				else
-					list_builds if options.list == true
-				end
+				spawn_builds ARGV
 			end
 		end
 
