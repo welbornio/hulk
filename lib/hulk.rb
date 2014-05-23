@@ -39,7 +39,7 @@ module Hulk
 
 
 		def run_build build, commands
-			puts "Hulk run build: #{build}".colorize(:green)
+			puts "Hulk run build: #{build.colorize(:green)}"
 			commands.each do |command|
 				if command =~ /^--/
 					cmds = []
@@ -53,11 +53,11 @@ module Hulk
 
 
 		def run_command command
-				puts "Hulk run command: #{command}".colorize(:green)
 				if command.include? '$$'
 					input = [(print "Enter var for: #{command.colorize(:light_blue)}: "), $stdin.gets.rstrip][1] # Prompt and input on same line
 					command .sub! '$$', input
 				end
+				puts "Hulk run command: #{command.colorize(:green)}"
 				system command
 				puts
 		end
