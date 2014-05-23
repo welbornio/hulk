@@ -14,7 +14,7 @@ module Hulk
 			begin
 				builds = YAML::load( File.open( './hulk.yml' ) )
 			rescue Exception
-				STDERR.puts "#{$!}".colorize(:red)
+				$stderr.puts "#{$!}".colorize(:red)
 				exit 1
 			end
 
@@ -46,7 +46,12 @@ module Hulk
 					cmds << command[2..-1]
 					spawn_builds cmds
 				else
-					run_command command
+					begin
+						run_command command
+					rescue
+						$stderr.puts "There was an error when attempting to run: #{command}".colorize(:red)
+						exit
+					end
 				end
 			end
 		end
@@ -92,7 +97,7 @@ module Hulk
 			begin
 				opt_parser.parse!(args)
 			rescue OptionParser::InvalidOption => e
-				STDERR.puts "Invalid Hulk option: #{e}".colorize(:red)
+				$stderr.puts "Invalid Hulk option: #{e}".colorize(:red)
 				exit 1
 			end
 	    options
