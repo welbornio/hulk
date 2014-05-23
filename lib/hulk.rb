@@ -1,5 +1,4 @@
 require "hulk/version"
-require 'colorize'
 require 'yaml'
 require 'optparse'
 require 'ostruct'
