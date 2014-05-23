@@ -42,7 +42,7 @@ module Hulk
 		end
 
 
-		def run_build build, commands
+		def collect_build_commands build, commands
 			puts "Hulk run build: #{build.colorize(:green)}"
 			commands.each do |command|
 				if command =~ /^--/
@@ -70,7 +70,7 @@ module Hulk
 			builds = parse_yaml
 			args.each do |arg|
 				if builds.has_key? arg
-					run_build arg, builds[arg]
+					collect_build_commands arg, builds[arg]
 				else
 					puts "Hulk no find build: #{arg}".colorize(:green)
 				end
