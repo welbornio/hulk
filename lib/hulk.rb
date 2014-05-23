@@ -1,4 +1,5 @@
 require "hulk/version"
+require 'colorize'
 require 'yaml'
 require 'optparse'
 require 'ostruct'
@@ -6,21 +7,17 @@ require 'ostruct'
 module Hulk
 	class Runner
 
-		def smash
-			puts 'this is hulk. byah!'
-		end
-
 		def self.parse_yaml
-			@builds = nil
+			builds = nil
 			begin
-				@builds = YAML::load( File.open( './hulk.yml' ) )
+				builds = YAML::load( File.open( './hulk.yml' ) )
 			rescue Exception
-				puts "Hulk no like your hulk.yml".green
-				puts "#{$!}, #{$@}".red
+				STDERR.puts "Hulk no like your hulk.yml".colorize(:red)
+				STDERR.puts "#{$!}, #{$@}".colorize(:red)
 				exit
 			end
-			exit if !@builds
-			@builds
+			exit if !builds
+			return builds
 		end
 
 
@@ -32,7 +29,7 @@ module Hulk
 
 		def self.list_builds
 			@builds = parse_yaml
-			puts "Hulk show you builds!".green if @builds.length > 0
+			puts "Hulk show you builds!".colorize(:green) if @builds.length > 0
 			count = 1
 			@builds.each do |key, value|
 				puts " [#{count}] >> #{key}"
@@ -42,14 +39,14 @@ module Hulk
 
 
 		def self.run_build build, commands
-			puts "Hulk run build: #{build}".green
+			puts "Hulk run build: #{build}".colorize(:green)
 			commands.each do |command|
 				if command =~ /^--/
 					cmds = []
 					cmds << command[2..-1]
 					run_builds cmds
 				else
-					puts "Hulk run command: #{command}".green
+					puts "Hulk run command: #{command}".colorize(:green)
 					system( command )
 					puts
 				end
@@ -65,7 +62,7 @@ module Hulk
 		end
 
 
-		def self.parse(args)
+		def parse(args)
 			options = OpenStruct.new
 
 			options.list = false
@@ -81,15 +78,15 @@ module Hulk
 			end
 
 			opt_parser.parse!(args)
-	    options
+	    return options
 		end
 
 
-		def self.hulk_smash
-			options = self.parse(ARGV)
+		def bootstrap
+			options = parse(ARGV)
 			list_builds if options.list == true
 			run_builds ARGV if ARGV and ARGV.length > 0
-			puts "Hulk no given arguments.".green if ARGV and ARGV.length == 0
+			puts "Hulk no given arguments.".colorize(:green) if ARGV and ARGV.length == 0
 		end
 
 	end

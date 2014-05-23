@@ -3,4 +3,4 @@
 require 'hulk'
 
 runner = Hulk::Runner.new
-runner.smash
+runner.bootstrap
