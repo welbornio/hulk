@@ -7,13 +7,12 @@ require 'ostruct'
 module Hulk
 	class Runner
 
-		def self.parse_yaml
+		def parse_yaml
 			builds = nil
 			begin
 				builds = YAML::load( File.open( './hulk.yml' ) )
 			rescue Exception
-				STDERR.puts "Hulk no like your hulk.yml".colorize(:red)
-				STDERR.puts "#{$!}, #{$@}".colorize(:red)
+				STDERR.puts "#{$!}".colorize(:red)
 				exit
 			end
 			exit if !builds
@@ -21,13 +20,13 @@ module Hulk
 		end
 
 
-		def self.get_builds
+		def get_builds
 			@builds = parse_yaml
 			@builds
 		end
 
 
-		def self.list_builds
+		def list_builds
 			@builds = parse_yaml
 			puts "Hulk show you builds!".colorize(:green) if @builds.length > 0
 			count = 1
@@ -38,7 +37,7 @@ module Hulk
 		end
 
 
-		def self.run_build build, commands
+		def run_build build, commands
 			puts "Hulk run build: #{build}".colorize(:green)
 			commands.each do |command|
 				if command =~ /^--/
@@ -54,7 +53,7 @@ module Hulk
 		end
 
 
-		def self.run_builds args
+		def run_builds args
 			@builds = parse_yaml
 			args.each do |arg|
 				run_build arg, @builds[arg] if @builds.has_key? arg
