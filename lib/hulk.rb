@@ -73,7 +73,7 @@ module Hulk
 			opt_parser = OptionParser.new do |opts|
 				opts.banner = "Usage: hulk [options]"
 
-				opts.on('-l', '--[no-]list', 'List Builds') do |l|
+				opts.on('-l', '--list', 'List Builds') do |l|
 					options[:list] = l
 				end
 
@@ -82,7 +82,7 @@ module Hulk
 			begin
 				opt_parser.parse!(args)
 			rescue OptionParser::InvalidOption => e
-				STDERR.puts "Invalid Hulk option: #{e}"
+				STDERR.puts "Invalid Hulk option: #{e}".colorize(:red)
 				exit 1
 			end
 	    options
