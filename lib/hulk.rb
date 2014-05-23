@@ -49,7 +49,11 @@ module Hulk
 		def run_builds args
 			builds = parse_yaml
 			args.each do |arg|
-				run_build arg, builds[arg] if builds.has_key? arg
+				if builds.has_key? arg
+					run_build arg, builds[arg]
+				else
+					puts "Hulk no find build: #{arg}".colorize(:green)
+				end
 			end
 		end
 
