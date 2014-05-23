@@ -55,10 +55,10 @@ module Hulk
 		def run_command command
 				puts "Hulk run command: #{command}".colorize(:green)
 				if command.include? '$$'
-					input = [(print "Enter var for: #{command}: ".colorize(:light_blue)), $stdin.gets.rstrip][1] # Prompt and input on same line
+					input = [(print "Enter var for:" + " #{command}: ".colorize(:light_blue)), $stdin.gets.rstrip][1] # Prompt and input on same line
 					command .sub! '$$', input
 				end
-				system Shellwords.escape command
+				system command
 				puts
 		end
 
