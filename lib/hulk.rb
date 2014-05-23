@@ -58,7 +58,7 @@ module Hulk
 
 		def prep_command command
 				if command.include? '$$'
-					input = [(print "Enter var for: #{command.colorize(:light_blue)}: "), $stdin.gets.rstrip][1] # Prompt and input on same line
+					input = [(print "Enter var for: #{command.colorize(:light_blue)}: "), $stdin.gets.rstrip][1] # Prompt and gets on same line
 					$stdin.flush
 					command .sub! '$$', input
 				end
