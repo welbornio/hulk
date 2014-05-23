@@ -45,11 +45,21 @@ module Hulk
 					cmds << command[2..-1]
 					spawn_builds cmds
 				else
-					puts "Hulk run command: #{command}".colorize(:green)
-					system( command )
-					puts
+					run_command command
 				end
 			end
+		end
+
+
+		def run_command command
+				puts "Hulk run command: #{command}".colorize(:green)
+				if command.include? '$$'
+					puts "Enter var for: #{command}: "
+					input = gets.chomp
+					command .sub! '$$', input
+				end
+				system( command )
+				puts
 		end
 
 
