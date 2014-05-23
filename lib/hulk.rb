@@ -61,8 +61,8 @@ module Hulk
 					input = [(print "Enter var for: #{command.colorize(:light_blue)}: "), $stdin.gets.rstrip][1] # Prompt and input on same line
 					$stdin.flush
 					command .sub! '$$', input
-					@complete_command_list << command
 				end
+				@complete_command_list << command
 		end
 
 
