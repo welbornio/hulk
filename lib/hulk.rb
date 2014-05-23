@@ -80,13 +80,15 @@ module Hulk
 
 
 		def bootstrap
-			options = parse(ARGV)
-			list_builds if options.list == true
-			parse 
-			if ARGV and ARGV.length >0
-				run_builds ARGV
-			else 
+			if ARGV and ARGV.length == 0
 				puts "Hulk no given arguments.".colorize(:green)
+			else
+				options = parse(ARGV)
+				if options.empty?
+					run_builds ARGV
+				else
+					list_builds if options.list == true
+				end
 			end
 		end
 
