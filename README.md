@@ -27,3 +27,17 @@ The above example will give you the following:
 As shown in the above example, you can call other builds within your current build. Simply prefix the build name with `--` and hulk will understand what you're asking. After running the other build, hulk will continue on with the initial build called.
 
 You can mix and match builds with commands, and nest builds as frequent, or infrequent as you like. Hulk can handle it.
+
+### Using variables
+
+Hulk can support one variable per command, with the use of `$$` as a placeholder.
+
+```YML
+build:
+	- "rake precompile:assets"
+	- "git add ."
+	- "git commit -m '$$'"
+	- "git push -f heroku:master"
+```
+
+Hulk runs two passes on your .yml file and will discover all variables before the commands begin running. Hulk will prompt you for each variable in your build before the build runs, and then you may step away as Hulk smashes through your build with your assigned variables.
