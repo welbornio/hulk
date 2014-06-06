@@ -1,7 +1,7 @@
 hulk
 ====
 
-Hulk is an ultra simple command line tool for running a list of bash commands synchronously. The only dependency is the colorize gem.
+Hulk is an ultra simple command line tool for running a list of bash commands synchronously.
 
 
 ## Usage
