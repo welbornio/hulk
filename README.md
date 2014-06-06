@@ -34,10 +34,10 @@ Hulk can support one variable per command, with the use of `$$` as a placeholder
 
 ```YML
 build:
-	- "rake precompile:assets"
+	- "rake precompile:$$"
 	- "git add ."
 	- "git commit -m '$$'"
-	- "git push -f heroku:master"
+	- "git push -f heroku:$$"
 ```
 
 Hulk runs two passes on your .yml file and will discover all variables before the commands begin running. Hulk will prompt you for each variable in your build before the build runs, and then you may step away as Hulk smashes through your build with your assigned variables.
