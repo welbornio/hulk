@@ -85,7 +85,7 @@ module Hulk
 			@complete_command_list.each do |command|
 				begin
 					puts "#{'Hulk run command:'.colorize(:green)} #{command.colorize(:light_blue)}"
-					system(command + '2>&1')
+					system(command + ' 2>&1')
 					puts
 				rescue
 					$stderr.puts "There was an error when attempting to run: #{command}".colorize(:red)
