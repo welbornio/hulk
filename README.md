@@ -5,7 +5,7 @@ Hulk is an ultra simple command line tool for running a list of bash commands sy
 
 ## Installing
 
-Just run the following command to install hulk onto your system
+Just run the following command to install hulk onto your system.
 ```
 gem install the_hulk
 ```
