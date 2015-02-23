@@ -3,6 +3,12 @@ hulk
 
 Hulk is an ultra simple command line tool for running a list of bash commands synchronously.
 
+## Installing
+
+Just run the following command to install hulk onto your system
+`
+gem install the_hulk
+`
 
 ## Usage
 
@@ -44,7 +50,7 @@ Feel free to use multiple variables.
 
 ```YML
 perform:
- - "$$ and then $$ followed by $$"
+- "$$ and then $$ followed by $$"
 ```
 
 Hulk will prompt you for each variable in your build before it runs, and then you may step away as Hulk smashes through your build with your assigned variables.
