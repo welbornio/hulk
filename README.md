@@ -10,12 +10,12 @@ After adding a `hulk.yml` file to your project root, simply reference the follow
 
 ```YML
 push:
-  - "git add ."
-  - "git commit -m 'Made some changes.'"
-  - "git push origin master"
+ - "git add ."
+ - "git commit -m 'Made some changes.'"
+ - "git push origin master"
 deploy:
-  - --push
-  - "git push -f heroku dev:master"
+ - --push
+ - "git push -f heroku dev:master"
 ```
 
 The above example will give you the following: 
@@ -34,17 +34,17 @@ Hulk can support variables in commands, with the use of `$$` as a placeholder.
 
 ```YML
 build:
-	- "rake precompile:$$"
-	- "git add ."
-	- "git commit -m '$$'"
-	- "git push -f heroku:$$"
+ - "rake precompile:$$"
+ - "git add ."
+ - "git commit -m '$$'"
+ - "git push -f heroku:$$"
 ```
 
 Feel free to use multiple variables.
 
 ```YML
 perform:
-	- "$$ and then $$ followed by $$"
+ - "$$ and then $$ followed by $$"
 ```
 
 Hulk will prompt you for each variable in your build before it runs, and then you may step away as Hulk smashes through your build with your assigned variables.

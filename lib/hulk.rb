@@ -135,7 +135,3 @@ module Hulk
 	end
 
 end
-
-# TODO remove this
-runner = Hulk::Runner.new
-runner.bootstrap
