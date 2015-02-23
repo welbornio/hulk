@@ -45,5 +45,6 @@ Feel free to use multiple variables.
 ```YML
 perform:
 	- "$$ and then $$ followed by $$"
+```
 
 Hulk will prompt you for each variable in your build before it runs, and then you may step away as Hulk smashes through your build with your assigned variables.
