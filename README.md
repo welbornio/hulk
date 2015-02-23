@@ -30,7 +30,7 @@ You can mix and match builds with commands, and nest builds as frequent, or infr
 
 ### Using variables
 
-Hulk can support one variable per command, with the use of `$$` as a placeholder.
+Hulk can support variables in commands, with the use of `$$` as a placeholder.
 
 ```YML
 build:
@@ -40,4 +40,10 @@ build:
 	- "git push -f heroku:$$"
 ```
 
-Hulk runs two passes on your .yml file and will discover all variables before the commands begin running. Hulk will prompt you for each variable in your build before the build runs, and then you may step away as Hulk smashes through your build with your assigned variables.
+Feel free to use multiple variables.
+
+```YML
+perform:
+	- "$$ and then $$ followed by $$"
+
+Hulk will prompt you for each variable in your build before it runs, and then you may step away as Hulk smashes through your build with your assigned variables.

@@ -33,17 +33,17 @@ module Hulk
 
 		def list_builds
 			builds = parse_yaml
-			puts "Hulk show you builds!".colorize(:green) if builds.length > 0
+			puts "Hulk show builds!".colorize(:green) if builds.length > 0
 			count = 1
 			builds.each do |key, value|
-				puts " [#{count}] >> #{key}"
+				puts " #{count}: #{key}"
 				count += 1
 			end
 		end
 
 
 		def collect_build_commands build, commands
-			puts "Hulk run build: #{build.colorize(:green)}"
+			puts "#{'Hulk run build:'.colorize(:green)} #{build.colorize(:light_blue)}"
 			commands.each do |command|
 				if command =~ /^--/
 					cmds = []
@@ -57,12 +57,15 @@ module Hulk
 
 
 		def prep_command command
-				if command.include? '$$'
-					input = [(print "Enter var for: #{command.colorize(:light_blue)}: "), $stdin.gets.rstrip][1] # Prompt and gets on same line
-					$stdin.flush
-					command .sub! '$$', input
-				end
-				@complete_command_list << command
+			while command.include? '$$'
+				tokens = command.split('$$', 2)
+				before = tokens[0]
+				after = tokens[1]
+				puts "Enter replacement for: #{before}#{'$$'.colorize(:light_blue)}#{after}"
+				input = $stdin.gets.chomp
+				command.sub! '$$', input
+			end
+			@complete_command_list << command
 		end
 
 
@@ -72,7 +75,7 @@ module Hulk
 				if builds.has_key? arg
 					collect_build_commands arg, builds[arg]
 				else
-					puts "Hulk no find build: #{arg}".colorize(:green)
+					puts "#{'Hulk no find build:'.colorize(:green)} #{arg.colorize(:light_blue)}"
 				end
 			end
 		end
@@ -81,8 +84,8 @@ module Hulk
 		def run_builds
 			@complete_command_list.each do |command|
 				begin
-					puts "Hulk run command: #{command.colorize(:green)}"
-					system command
+					puts "#{'Hulk run command:'.colorize(:green)} #{command.colorize(:light_blue)}"
+					system(command + '2>&1')
 					puts
 				rescue
 					$stderr.puts "There was an error when attempting to run: #{command}".colorize(:red)
@@ -93,11 +96,9 @@ module Hulk
 
 
 		def parse args
-			options = OpenStruct.new
+			options = {}
 
-			options.list = false
-
-			opt_parser = OptionParser.new do |opts|
+			opt = OptionParser.new do |opts|
 				opts.banner = "Usage: hulk [options]"
 
 				opts.on('-l', '--list', 'List Builds') do |l|
@@ -107,12 +108,12 @@ module Hulk
 			end
 
 			begin
-				opt_parser.parse!(args)
+				opt.parse!
 			rescue OptionParser::InvalidOption => e
-				$stderr.puts "Invalid Hulk option: #{e}".colorize(:red)
-				exit 1
+				puts "#{'Hulk no find option:'.colorize(:green)} #{e}"
 			end
-	    options
+
+	    	return options
 		end
 
 
@@ -124,7 +125,7 @@ module Hulk
 
 			options = parse ARGV
 			if ARGV.empty?
-				list_builds if options.list == true
+				list_builds if options[:list] == true
 			else
 				collect_builds ARGV
 				run_builds
@@ -134,3 +135,7 @@ module Hulk
 	end
 
 end
+
+# TODO remove this
+runner = Hulk::Runner.new
+runner.bootstrap
