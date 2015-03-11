@@ -1,4 +1,4 @@
-Copyright (c) 2014 Ethan Welborn
+Copyright (c) 2014 Ethan Welborn @welbornio
 
 MIT License
 
